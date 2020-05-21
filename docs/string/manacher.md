@@ -188,34 +188,26 @@ for (int i = 0, l = 0, r = -1; i < n; i++) {
  ## A template
  一种较为清晰的模板，方便书写。
  ```cpp
-     string mar(string s) {
-        string ret="^";
-        for(char c:s)
+    string manache(string s) {
+        if(!s.size()) return "";
+        string str="^";
+        for(char &c:s) str+='#',str+=c;
+        str+="#$";
+        int n=str.size();
+        vector<int> A(n,0);
+        int k,imax,res;
+        A[0]=0;
+        k=imax=res=0;
+        for(int i=1;i<n;++i)
         {
-            ret+='#';
-            ret+=c;
-        }
-        ret+="#$";
-        //cout<<ret<<endl;
-        vector<int> marche(ret.size(),0);
-        int mid=0,k=0,imax=0;
-        for(int i=1;i<marche.size();++i)
-        {   
-                if(i<k) marche[i]=min(k-i,marche[mid*2-i]);
-                while(ret[i+marche[i]+1]==ret[i-marche[i]-1]) marche[i]++;
-                if(marche[i]>marche[mid])
+                if(i<k) A[i]=min(k-i,A[(imax<<1)-i]);
+                while(str[i+A[i]+1]==str[i-A[i]-1]) ++A[i];
+                if(i+A[i]>k)
                 {
-                    k=marche[i]+(mid=i);
-                    imax=marche[i]>marche[imax]?i:imax;
+                       k=A[i]+(imax=i);
+                        res=A[res]>A[imax]?res:imax;
                 }
-                //cout<<marche[i]<<" ";
         }
-            //cout<<endl;
-        string res;
-        for(int i=imax-marche[imax];i<imax+marche[imax];++i){
-            if(ret[i]!='#')
-            res+=ret[i];
-        }
-        return res;
+        return s.substr((res-A[res])>>1,A[res]);
     }
  ```
