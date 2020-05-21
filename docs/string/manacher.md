@@ -187,7 +187,7 @@ for (int i = 0, l = 0, r = -1; i < n; i++) {
  
  ## 笔记
  一种较为清晰的模板,方便书写.
- ```
+ ```cpp
      string mar(string s) {
         string ret="^";
         for(char c:s)
