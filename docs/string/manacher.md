@@ -184,3 +184,38 @@ for (int i = 0, l = 0, r = -1; i < n; i++) {
 * * *
 
  **本页面主要译自博文 [Нахождение всех подпалиндромов](http://e-maxx.ru/algo/palindromes_count) 与其英文翻译版 [Finding all sub-palindromes in $O(N)$ ](https://cp-algorithms.com/string/manacher.html) 。其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0。** 
+ 
+ ## 笔记
+ 一种较为清晰的模板,方便书写.
+ ```
+     string mar(string s) {
+        string ret="^";
+        for(char c:s)
+        {
+            ret+='#';
+            ret+=c;
+        }
+        ret+="#$";
+        //cout<<ret<<endl;
+        vector<int> marche(ret.size(),0);
+        int mid=0,k=0,imax=0;
+        for(int i=1;i<marche.size();++i)
+        {   
+                if(i<k) marche[i]=min(k-i,marche[mid*2-i]);
+                while(ret[i+marche[i]+1]==ret[i-marche[i]-1]) marche[i]++;
+                if(marche[i]>marche[mid])
+                {
+                    k=marche[i]+(mid=i);
+                    imax=marche[i]>marche[imax]?i:imax;
+                }
+                //cout<<marche[i]<<" ";
+        }
+            //cout<<endl;
+        string res;
+        for(int i=imax-marche[imax];i<imax+marche[imax];++i){
+            if(ret[i]!='#')
+            res+=ret[i];
+        }
+        return res;
+    }
+ ```
